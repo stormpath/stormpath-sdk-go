@@ -132,7 +132,7 @@ func NewClient(keypair *ApiKeyPair) (*Client, error) {
 // encountered.
 func (client *Client) Request(method string, url string, body io.Reader) (*http.Response, error) {
 	req, _ := http.NewRequest(method, url, body)
-	req.Header.Set("User-Agent", "go-stormpath/0.0.1")
+	req.Header.Set("User-Agent", USER_AGENT)
 	req.SetBasicAuth(client.Keypair.Id, client.Keypair.Secret)
 
 	resp, err := client.Transport.RoundTrip(req)
