@@ -7,9 +7,13 @@ import (
 	"net/http"
 )
 
-const BASE_URL = "https://api.stormpath.com/v1"
-const ENABLED = "enabled"
-const DISABLED = "disabled"
+const (
+	VERSION    = "0.0.1"
+	USER_AGENT = "go-stormpath/" + VERSION
+	BASE_URL   = "https://api.stormpath.com/v1"
+	ENABLED    = "enabled"
+	DISABLED   = "disabled"
+)
 
 // The ApiKeyPair object is meant for storing Stormpath credentials.
 type ApiKeyPair struct {
