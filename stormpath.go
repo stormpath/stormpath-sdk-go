@@ -127,8 +127,8 @@ func NewClient(keypair *ApiKeyPair) (*Client, error) {
 	return client, nil
 }
 
-// Request makes an HTTP request to the Stormpath API, autoamtically using the
-// user's API keypair as credentials.  It returns an HTTP response and any error
+// Request makes an HTTP request to the Stormpath API, using the user's
+// credentials automatically.  Returns an HTTP response and any error
 // encountered.
 func (client *Client) Request(method string, url string, body io.Reader) (*http.Response, error) {
 	req, _ := http.NewRequest(method, url, body)
