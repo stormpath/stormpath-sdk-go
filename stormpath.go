@@ -109,9 +109,10 @@ type CustomData struct {
 	ModifiedAt string
 }
 
-// NewClient generates a new Client, given an ApiKeyPair as input.  It will then
-// use the ApiKeyPair to attempt to fetch the current Stormpath Tenant.  Returns
-// an initialized Client (thread safe) and any error encountered.
+// NewClient generates a new Stormpath Client, given an ApiKeyPair as input.
+// It will then use the ApiKeyPair to attempt to fetch the current Stormpath
+// Tenant.  Returns an initialized Client (thread safe) and any error
+// encountered.
 func NewClient(keypair *ApiKeyPair) (*Client, error) {
 	client := &Client{
 		Transport: &http.Transport{},
