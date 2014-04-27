@@ -113,11 +113,13 @@ func NewClient(keypair *ApiKeyPair) (*Client, error) {
 		Transport: &http.Transport{},
 		Keypair:   keypair,
 	}
+
 	tenant, err := client.GetTenant()
 	if err != nil {
 		return nil, err
 	}
 	client.Tenant = tenant
+
 	return client, nil
 }
 
