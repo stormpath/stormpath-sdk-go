@@ -1,6 +1,7 @@
 package stormpath
 
 import (
+	"github.com/nu7hatch/gouuid"
 	"log"
 	"os"
 	"testing"
@@ -9,6 +10,7 @@ import (
 var (
 	STORMPATH_API_KEY_ID     = os.Getenv("STORMPATH_API_KEY_ID")
 	STORMPATH_API_KEY_SECRET = os.Getenv("STORMPATH_API_KEY_SECRET")
+	TEST_PREFIX              = ""
 )
 
 func init() {
@@ -17,6 +19,15 @@ func init() {
 	} else if STORMPATH_API_KEY_SECRET == "" {
 		log.Fatal("STORMPATH_API_KEY_SECRET not set in the environment.")
 	}
+
+	// Generate a globally unique UUID to be used as a prefix throughout our
+	// testing.
+	uuid, err := uuid.NewV4()
+	if err != nil {
+		log.Fatal("UUID generation failed.")
+	}
+
+	TEST_PREFIX = uuid.String()
 }
 
 func TestNewClient(t *testing.T) {
