@@ -1,7 +1,6 @@
 package stormpath
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"testing"
