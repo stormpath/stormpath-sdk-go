@@ -10,7 +10,8 @@ import (
 var (
 	STORMPATH_API_KEY_ID     = os.Getenv("STORMPATH_API_KEY_ID")
 	STORMPATH_API_KEY_SECRET = os.Getenv("STORMPATH_API_KEY_SECRET")
-	TEST_PREFIX              = ""
+	TEST_PREFIX              string
+	CLIENT                   *Client
 )
 
 func init() {
@@ -28,6 +29,16 @@ func init() {
 	}
 
 	TEST_PREFIX = uuid.String()
+
+	// Generate a Stormpath client we'll use for all our tests.
+	client, err := NewClient(&ApiKeyPair{
+		Id:     STORMPATH_API_KEY_ID,
+		Secret: STORMPATH_API_KEY_SECRET,
+	})
+	if err != nil {
+		log.Fatal("Couldn't create a Stormpath client.")
+	}
+	CLIENT = client
 }
 
 func TestNewClient(t *testing.T) {
@@ -45,15 +56,7 @@ func TestNewClient(t *testing.T) {
 }
 
 func TestRequest(t *testing.T) {
-	client, err := NewClient(&ApiKeyPair{
-		Id:     STORMPATH_API_KEY_ID,
-		Secret: STORMPATH_API_KEY_SECRET,
-	})
-	if err != nil {
-		t.Error(err)
-	}
-
-	resp, err := client.Request("GET", client.Tenant.Href+"/applications", nil)
+	resp, err := CLIENT.Request("GET", CLIENT.Tenant.Href+"/applications", nil)
 	if err != nil {
 		t.Error(err)
 	}
@@ -65,15 +68,7 @@ func TestRequest(t *testing.T) {
 }
 
 func TestGetTenant(t *testing.T) {
-	client, err := NewClient(&ApiKeyPair{
-		Id:     STORMPATH_API_KEY_ID,
-		Secret: STORMPATH_API_KEY_SECRET,
-	})
-	if err != nil {
-		t.Error(err)
-	}
-
-	tenant, err := client.GetTenant()
+	tenant, err := CLIENT.GetTenant()
 	if err != nil {
 		t.Error(err)
 	}
@@ -88,15 +83,7 @@ func TestGetTenant(t *testing.T) {
 }
 
 func TestGetApplications(t *testing.T) {
-	client, err := NewClient(&ApiKeyPair{
-		Id:     STORMPATH_API_KEY_ID,
-		Secret: STORMPATH_API_KEY_SECRET,
-	})
-	if err != nil {
-		t.Error(err)
-	}
-
-	_, err = client.GetApplications()
+	_, err := CLIENT.GetApplications()
 	if err != nil {
 		t.Error(err)
 	}
