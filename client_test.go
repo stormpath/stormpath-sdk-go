@@ -34,7 +34,7 @@ func TestNewClient(t *testing.T) {
 	}
 }
 
-func TestClientRequest(t *testing.T) {
+func TestRequest(t *testing.T) {
 	client, err := NewClient(&ApiKeyPair{
 		Id:     STORMPATH_API_KEY_ID,
 		Secret: STORMPATH_API_KEY_SECRET,
@@ -54,7 +54,7 @@ func TestClientRequest(t *testing.T) {
 	}
 }
 
-func TestClientGetTenant(t *testing.T) {
+func TestGetTenant(t *testing.T) {
 	client, err := NewClient(&ApiKeyPair{
 		Id:     STORMPATH_API_KEY_ID,
 		Secret: STORMPATH_API_KEY_SECRET,
