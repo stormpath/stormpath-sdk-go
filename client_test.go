@@ -57,13 +57,13 @@ func TestNewClient(t *testing.T) {
 }
 
 func TestRequest(t *testing.T) {
-	resp, err := CLIENT.Request("GET", CLIENT.Tenant.Href+"/applications", nil)
+	resp, err := CLIENT.Request("GET", "/tenants/current", nil)
 	if err != nil {
 		t.Error(err)
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode != 200 {
+	if resp.StatusCode != 302 {
 		t.Error(err)
 	}
 }
