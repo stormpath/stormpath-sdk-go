@@ -85,7 +85,7 @@ func TestGetApplications(t *testing.T) {
 		t.Error(err)
 	}
 
-	applications, err := client.GetApplications()
+	_, err = client.GetApplications()
 	if err != nil {
 		t.Error(err)
 	}
