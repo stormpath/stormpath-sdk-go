@@ -1,6 +1,7 @@
 package stormpath
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"testing"
@@ -74,4 +75,21 @@ func TestClientGetTenant(t *testing.T) {
 	} else if tenant.Key == "" {
 		t.Error("No tenant key could be found.")
 	}
+}
+
+func TestGetApplications(t *testing.T) {
+	client, err := NewClient(&ApiKeyPair{
+		Id:     STORMPATH_API_KEY_ID,
+		Secret: STORMPATH_API_KEY_SECRET,
+	})
+	if err != nil {
+		t.Error(err)
+	}
+
+	applications, err := client.GetApplications()
+	if err != nil {
+		t.Error(err)
+	}
+
+	fmt.Println("Applications:", applications)
 }
