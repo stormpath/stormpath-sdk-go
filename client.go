@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 )
 
 // The Client object allows you to easily communicate with the Stormpath API
@@ -39,6 +40,13 @@ func NewClient(keypair *ApiKeyPair) (*Client, error) {
 // credentials automatically.  Returns an HTTP response and any error
 // encountered.
 func (client *Client) Request(method string, url string, body io.Reader) (*http.Response, error) {
+
+	// If the URL starts with /, we'll go ahead and generate the fully qualified
+	// URL string to make handling requests easier.
+	if strings.HasPrefix(url, "/") {
+		url = BASE_URL + url
+	}
+
 	req, _ := http.NewRequest(method, url, body)
 	req.Header.Set("User-Agent", USER_AGENT)
 	req.SetBasicAuth(client.Keypair.Id, client.Keypair.Secret)
