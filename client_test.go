@@ -28,6 +28,7 @@ func init() {
 		log.Fatal("UUID generation failed.")
 	}
 
+	// Store our test prefix.
 	TEST_PREFIX = uuid.String()
 
 	// Generate a Stormpath client we'll use for all our tests.
