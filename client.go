@@ -85,7 +85,7 @@ func (client *Client) GetTenant() (*Tenant, error) {
 // NOTE: This may take a while, as if you have a lot of Applications, this will
 // iterate over them all before returning.
 func (client *Client) GetApplications() (*[]Application, error) {
-	resp, err := client.Request("GET", fmt.Sprintf("%v/applications", client.Tenant.Href), nil)
+	resp, err := client.Request("GET", client.Tenant.Href+"/applications", nil)
 	if err != nil {
 		return nil, err
 	}
