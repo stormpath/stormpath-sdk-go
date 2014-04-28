@@ -89,3 +89,10 @@ func TestGetApplications(t *testing.T) {
 		t.Error(err)
 	}
 }
+
+func TestGetDirectories(t *testing.T) {
+	_, err := CLIENT.GetDirectories()
+	if err != nil {
+		t.Error(err)
+	}
+}

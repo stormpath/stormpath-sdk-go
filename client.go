@@ -139,3 +139,55 @@ func (client *Client) GetApplications() (*[]Application, error) {
 
 	return &apps, nil
 }
+
+// GetDirectories gets a list of all Stormpath Directories for the given
+// Tenant.  Returns a slice of Directories and any error encountered.
+// NOTE: This may take a while, as if you have a lot of Directories, this will
+// iterate over them all before returning.
+func (client *Client) GetDirectories() (*[]Directory, error) {
+	resp, err := client.Request("GET", client.Tenant.Href+"/directories", nil)
+	if err != nil {
+		return nil, err
+	}
+
+	dl := &DirectoryList{}
+	err = json.NewDecoder(resp.Body).Decode(&dl)
+	if err != nil {
+		return nil, err
+	}
+	resp.Body.Close()
+
+	// If there is only a single page of directories, return immediately.
+	if len(*dl.Items) < dl.Limit {
+		return dl.Items, nil
+	}
+
+	// Create a new slice called dirs -- this will hold our final list of
+	// Directory objects that are eventually returned.
+	dirs := make([]Directory, len(*dl.Items))
+	copy(dirs, *dl.Items)
+
+	// Loop through all subsequent pages of Directories, adding each
+	// Directory to our final dirs slice.
+	for offset := dl.Limit; len(*dl.Items) == dl.Limit; offset += dl.Limit {
+		resp, err := client.Request("GET", fmt.Sprintf("%v/directories?offset=%v", client.Tenant.Href, offset), nil)
+		if err != nil {
+			return nil, err
+		}
+
+		// Grab the JSON body of the request.
+		dl = &DirectoryList{}
+		err = json.NewDecoder(resp.Body).Decode(&dl)
+		if err != nil {
+			return nil, err
+		}
+		resp.Body.Close()
+
+		// Append each Directory onto our dirs slice.
+		for _, dir := range *dl.Items {
+			dirs = append(dirs, dir)
+		}
+	}
+
+	return &dirs, nil
+}
