@@ -64,6 +64,14 @@ type Directory struct {
 	Tenant      *Tenant
 }
 
+// A list of Stormpath Directories.
+type DirectoryList struct {
+	Href   string       `json:"href"`
+	Offset int          `json:"offset"`
+	Limit  int          `json:"limit"`
+	Items  *[]Directory `json:"items"`
+}
+
 // A unique Stormpath group.
 type Group struct {
 	Href        string
