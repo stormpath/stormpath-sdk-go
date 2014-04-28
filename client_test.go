@@ -64,7 +64,17 @@ func TestRequest(t *testing.T) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 302 {
+		t.Error("Request to /tenants/current failed.")
+	}
+
+	resp, err = CLIENT.Request("GET", CLIENT.Tenant.Href+"/applications", nil)
+	if err != nil {
 		t.Error(err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != 200 {
+		t.Error("Request to /applications failed.")
 	}
 }
 
