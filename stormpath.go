@@ -10,6 +10,15 @@ const (
 	DISABLED   = "disabled"
 )
 
+// The StormpathError object represents Stormpath API service errors.
+type StormpathError struct {
+	Status           int    `json:"status"`
+	Code             int    `json:"code"`
+	Message          string `json:"message"`
+	DeveloperMessage string `json:"developerMessage"`
+	MoreInfo         string `json:"moreInfo"`
+}
+
 // The ApiKeyPair object is meant for storing Stormpath credentials.
 type ApiKeyPair struct {
 	Id     string
