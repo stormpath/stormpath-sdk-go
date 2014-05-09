@@ -4,7 +4,7 @@ import ()
 
 const (
 	VERSION    = "0.0.1"
-	USER_AGENT = "go-stormpath/" + VERSION
+	USER_AGENT = "stormpath-sdk-go/" + VERSION
 	BASE_URL   = "https://api.stormpath.com/v1"
 	ENABLED    = "enabled"
 	DISABLED   = "disabled"
