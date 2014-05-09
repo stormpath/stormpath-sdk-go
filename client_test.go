@@ -98,6 +98,34 @@ func TestGetTenant(t *testing.T) {
 	}
 }
 
+func TestCreateApplication(t *testing.T) {
+	app := &Application{
+		Name:        TEST_PREFIX + "omg-test",
+		Description: "omg-test",
+	}
+
+	newApp, err := CLIENT.CreateApplication(app, true)
+	if err != nil {
+		t.Error(err)
+	}
+
+	if newApp.Name != TEST_PREFIX+"omg-test" {
+		t.Error("New Application's name doesn't match.")
+	}
+
+	if newApp.Description != "omg-test" {
+		t.Error("New Application's description doesn't match.")
+	}
+
+	if newApp.Href == "" {
+		t.Error("New Application doesn't have an href.")
+	}
+
+	if newApp.Status != "ENABLED" {
+		t.Error("New Application is not enabled.")
+	}
+}
+
 func TestGetApplications(t *testing.T) {
 	_, err := CLIENT.GetApplications()
 	if err != nil {
