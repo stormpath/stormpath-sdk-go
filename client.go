@@ -108,7 +108,6 @@ func (client *Client) CreateApplication(application *Application, createDirector
 	}
 	defer resp.Body.Close()
 
-	fmt.Println(resp)
 	dec := json.NewDecoder(resp.Body)
 
 	// If the response didn't generate a 201 CREATED, this means something bad
