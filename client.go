@@ -1,6 +1,7 @@
 package stormpath
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -49,6 +50,8 @@ func (client *Client) Request(method string, url string, body io.Reader) (*http.
 
 	req, _ := http.NewRequest(method, url, body)
 	req.Header.Set("User-Agent", USER_AGENT)
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("Content-Type", "application/json")
 	req.SetBasicAuth(client.Keypair.Id, client.Keypair.Secret)
 
 	resp, err := client.Transport.RoundTrip(req)
@@ -86,6 +89,51 @@ func (client *Client) GetTenant() (*Tenant, error) {
 	}
 
 	return tenant, nil
+}
+
+// CreateApplication creates a new Stormpath Application resource for the given
+// Tenant.  Returns a new Application object, and any error encountered.
+func (client *Client) CreateApplication(application *Application, createDirectory bool) (*Application, error) {
+
+	// First, convert the Application to JSON.
+	jsonBytes, err := json.Marshal(application)
+	if err != nil {
+		return nil, err
+	}
+
+	// Fire off the creation request.
+	resp, err := client.Request("POST", "/applications", bytes.NewReader(jsonBytes))
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	fmt.Println(resp)
+	dec := json.NewDecoder(resp.Body)
+
+	// If the response didn't generate a 201 CREATED, this means something bad
+	// happened, and we can expect an error from Stormpath.
+	if resp.StatusCode != 201 {
+		se := &StormpathError{}
+
+		err = dec.Decode(se)
+		if err != nil {
+			return nil, err
+		}
+
+		return nil, errors.New(fmt.Sprintf("%s More Info: %s", se.DeveloperMessage, se.MoreInfo))
+	}
+
+	// If we get here, it means the Application was successfully created! So
+	// we'll then create a new Application object, and return it.
+	newApp := &Application{}
+
+	err = dec.Decode(newApp)
+	if err != nil {
+		return nil, err
+	}
+
+	return newApp, nil
 }
 
 // GetApplications gets a list of all Stormpath Applications for the given
