@@ -14,6 +14,11 @@ var (
 	CLIENT                   *Client
 )
 
+// Initialize our test environment.  This handles some basic stuff: checking to
+// ensure there is an API key pair for Stormpath in the environment (so we can
+// run our tests), generating a unique test prefix that we can use to create
+// applications / etc. without worrying about concurrency, and lastly -- it
+// creates a Stormpath Client object that we can use to run our tests.
 func init() {
 	if STORMPATH_API_KEY_ID == "" {
 		log.Fatal("STORMPATH_API_KEY_ID not set in the environment.")
@@ -29,7 +34,7 @@ func init() {
 	}
 
 	// Store our test prefix.
-	TEST_PREFIX = uuid.String()
+	TEST_PREFIX = uuid.String() + "-"
 
 	// Generate a Stormpath client we'll use for all our tests.
 	client, err := NewClient(&ApiKeyPair{
