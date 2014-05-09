@@ -34,10 +34,10 @@ type Tenant struct {
 
 // An Application is a unique Stormpath application.
 type Application struct {
-	Href        string  `json:"href"`
+	Href        string  `json:"href,omitempty"`
 	Name        string  `json:"name"`
-	Description string  `json:"description"`
-	Status      string  `json:"status"`
+	Description string  `json:"description,omitempty"`
+	Status      string  `json:"status,omitempty"`
 	Tenant      *Tenant `json:"-"`
 }
 
